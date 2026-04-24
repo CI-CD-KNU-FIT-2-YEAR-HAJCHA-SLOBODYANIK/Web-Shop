@@ -1,7 +1,6 @@
 import os
-from pathlib import Path
 
-SECRET_KEY = 'django-insecure-моя-секретна-строка' 
+SECRET_KEY = 'django-insecure-моя-секретна-строка'
 DEBUG = True
 ALLOWED_HOSTS = ['*']
 
