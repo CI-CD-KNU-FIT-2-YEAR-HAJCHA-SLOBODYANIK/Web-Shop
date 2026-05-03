@@ -21,7 +21,6 @@ def product_list(request, category_slug=None):
     if max_p:
         products = products.filter(price__lte=max_p)
 
-    # Отправляем данные в HTML-шаблон (который сделает Роль 3)
     return render(request, 'shop/product/list.html', {
         'category': category,
         'categories': categories,
