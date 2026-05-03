@@ -5,8 +5,8 @@ class Category(models.Model):
     slug = models.SlugField(max_length=200, unique=True)
 
     class Meta:
-        verbose_name = 'Категория'
-        verbose_name_plural = 'Категории'
+        verbose_name = 'Категорія'
+        verbose_name_plural = 'Категорії'
 
     def __str__(self):
         return self.name
@@ -23,7 +23,7 @@ class Product(models.Model):
 
     class Meta:
         verbose_name = 'Товар'
-        verbose_name_plural = 'Товары'
+        verbose_name_plural = 'Товари'
         ordering = ('-created',)
 
     def __str__(self):
