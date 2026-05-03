@@ -47,6 +47,9 @@ class Order(models.Model):
     def __str__(self):
         return f'Замовлення {self.id}'
 
+    def get_total_cost(self):
+        return sum(item.price * item.quantity for item in self.items.all())
+
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)
     product = models.ForeignKey(Product, related_name='order_items', on_delete=models.CASCADE)
@@ -56,3 +59,4 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return str(self.id)
+

@@ -17,7 +17,6 @@ class ProductAdmin(admin.ModelAdmin):
     
     prepopulated_fields = {'slug': ('name',)}
 
-
 class OrderItemInline(admin.TabularInline):
     model = OrderItem
     raw_id_fields = ['product']
