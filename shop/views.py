@@ -4,15 +4,16 @@ from .models import Category, Product, OrderItem
 from .forms import OrderCreateForm, CartAddProductForm
 from .cart import Cart
 
+
 def product_list(request, category_slug=None):
     category = None
     categories = Category.objects.all()
     products = Product.objects.filter(available=True)
-    
+
     if category_slug:
         category = get_object_or_404(Category, slug=category_slug)
         products = products.filter(category=category)
-        
+
     min_p = request.GET.get('min_price')
     max_p = request.GET.get('max_price')
 
@@ -28,7 +29,7 @@ def product_list(request, category_slug=None):
         'newest': '-created',
         'oldest': 'created'
     }
-    
+
     if sort in sort_mapping:
         products = products.order_by(sort_mapping[sort])
 
@@ -39,6 +40,7 @@ def product_list(request, category_slug=None):
         'current_sort': sort
     })
 
+
 def product_detail(request, id, slug):
     product = get_object_or_404(Product, id=id, slug=slug, available=True)
     cart_product_form = CartAddProductForm()
@@ -46,6 +48,7 @@ def product_detail(request, id, slug):
         'product': product,
         'cart_product_form': cart_product_form
     })
+
 
 @require_POST
 def cart_add(request, product_id):
@@ -61,12 +64,14 @@ def cart_add(request, product_id):
         )
     return redirect('shop:cart_detail')
 
+
 @require_POST
 def cart_remove(request, product_id):
     cart = Cart(request)
     product = get_object_or_404(Product, id=product_id)
     cart.remove(product)
     return redirect('shop:cart_detail')
+
 
 def cart_detail(request):
     cart = Cart(request)
@@ -76,6 +81,7 @@ def cart_detail(request):
             'override': True
         })
     return render(request, 'shop/cart/detail.html', {'cart': cart})
+
 
 def order_create(request):
     cart = Cart(request)
