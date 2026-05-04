@@ -13,19 +13,54 @@ class ShopComplexTest(TestCase):
             name='Радянська військова техніка', slug='tanks')
 
         self.p1 = Product.objects.create(
-            category=self.cat_weapon, name='РДС-1', slug='rds-1', price=Decimal('230.00'), available=True)
+            category=self.cat_weapon,
+            name='РДС-1',
+            slug='rds-1',
+            price=Decimal('230.00'),
+            available=True
+        )
         self.p2 = Product.objects.create(
-            category=self.cat_weapon, name='Mark 15', slug='mark-15', price=Decimal('499.00'), available=True)
+            category=self.cat_weapon,
+            name='Mark 15',
+            slug='mark-15',
+            price=Decimal('499.00'),
+            available=True
+        )
         self.p3 = Product.objects.create(
-            category=self.cat_people, name='Іван', slug='ivan', price=Decimal('15.00'), available=False)
+            category=self.cat_people,
+            name='Іван',
+            slug='ivan',
+            price=Decimal('15.00'),
+            available=False
+        )
         self.p4 = Product.objects.create(
-            category=self.cat_people, name='Петя', slug='petya', price=Decimal('20.00'), available=True)
+            category=self.cat_people,
+            name='Петя',
+            slug='petya',
+            price=Decimal('20.00'),
+            available=True
+        )
         self.p5 = Product.objects.create(
-            category=self.cat_tanks, name='Т-80', slug='t-80', price=Decimal('3200.00'), available=True)
+            category=self.cat_tanks,
+            name='Т-80',
+            slug='t-80',
+            price=Decimal('3200.00'),
+            available=True
+        )
         self.p6 = Product.objects.create(
-            category=self.cat_tanks, name='Т-72', slug='t-72', price=Decimal('2600.00'), available=True)
+            category=self.cat_tanks,
+            name='Т-72',
+            slug='t-72',
+            price=Decimal('2600.00'),
+            available=True
+        )
         self.p7 = Product.objects.create(
-            category=self.cat_tanks, name='Т-55', slug='t-55', price=Decimal('1200.00'), available=True)
+            category=self.cat_tanks,
+            name='Т-55',
+            slug='t-55',
+            price=Decimal('1200.00'),
+            available=True
+        )
 
     def test_availability_logic(self):
         response = self.client.get(reverse('shop:product_list'))
