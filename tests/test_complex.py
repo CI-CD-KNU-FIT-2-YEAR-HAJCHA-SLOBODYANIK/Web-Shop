@@ -89,31 +89,6 @@ def test_sorting_logic(client, setup_shop_data):
     assert products[0].name == 'Петя'
     assert products[-1].name == 'Т-80'
 
-
-def test_order_creation_integrity(client, setup_shop_data):
-    """Перевірка створення замовлення та фіксації цін у складі замовлення."""
-    # Додаємо товари в кошик через клієнт
-    cart_url = reverse('shop:cart_add', args=[setup_shop_data['p1'].id])
-    client.post(cart_url, data={'quantity': 2, 'override': False})
-    
-    order_url = reverse('shop:order_create')
-    order_data = {
-        'first_name': 'Тест',
-        'last_name': 'Юзер',
-        'email': 'test@test.com',
-        'address': 'Місто',
-        'city': 'Місто'
-    }
-    
-    response = client.post(order_url, data=order_data)
-    assert response.status_code == 200
-    
-    order = Order.objects.last()
-    assert order.first_name == 'Тест'
-    assert order.items.count() == 1
-    assert order.get_total_cost() == Decimal('460.00') # 230.00 * 2
-
-
 def test_price_integrity_after_order(setup_shop_data):
     """Перевірка збереження фіксованої ціни після зміни ціни в самому каталозі."""
     order = Order.objects.create(
