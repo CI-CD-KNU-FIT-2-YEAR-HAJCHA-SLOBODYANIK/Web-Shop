@@ -2,7 +2,7 @@ import pytest
 from django.urls import reverse
 from django.conf import settings
 from decimal import Decimal
-from shop.models import Category, Product, Order
+from shop.models import Category, Product
 
 
 @pytest.mark.django_db

@@ -1,6 +1,6 @@
 import pytest
 from decimal import Decimal
-from shop.models import Category, Product, Order, OrderItem
+from shop.models import Category, Product, Order
 
 
 @pytest.mark.django_db
