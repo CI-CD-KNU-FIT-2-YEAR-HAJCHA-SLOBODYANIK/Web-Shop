@@ -42,4 +42,3 @@ class OrderAdmin(admin.ModelAdmin):
     list_filter = ["paid", "created", "updated"]
     # Дозволяє редагувати товари прямо всередині форми замовлення
     inlines = [OrderItemInline]
-    
