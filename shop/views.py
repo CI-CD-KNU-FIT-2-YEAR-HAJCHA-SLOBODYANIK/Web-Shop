@@ -63,7 +63,9 @@ def cart_add(request, product_id):
     if form.is_valid():
         cd = form.cleaned_data
         cart.add(
-            product=product, quantity=cd["quantity"], override_quantity=cd["override"]
+            product=product,
+            quantity=cd["quantity"],
+            override_quantity=cd["override"]
         )
     return redirect("shop:cart_detail")
 
@@ -80,7 +82,10 @@ def cart_detail(request):
     cart = Cart(request)
     for item in cart:
         item["update_quantity_form"] = CartAddProductForm(
-            initial={"quantity": item["quantity"], "override": True}
+            initial={
+                "quantity": item["quantity"],
+                "override": True
+            }
         )
     return render(request, "shop/cart/detail.html", {"cart": cart})
 
@@ -99,7 +104,15 @@ def order_create(request):
                     quantity=item["quantity"],
                 )
             cart.clear()
-            return render(request, "shop/order/created.html", {"order": order})
+            return render(
+                request,
+                "shop/order/created.html",
+                {"order": order}
+            )
     else:
         form = OrderCreateForm()
-    return render(request, "shop/order/create.html", {"cart": cart, "form": form})
+    return render(
+        request,
+        "shop/order/create.html",
+        {"cart": cart, "form": form}
+    )

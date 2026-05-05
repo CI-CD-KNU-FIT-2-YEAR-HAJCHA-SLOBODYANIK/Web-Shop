@@ -5,18 +5,21 @@ from .models import Category, Product, Order, OrderItem
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ["name", "slug"]
-
     prepopulated_fields = {"slug": ("name",)}
 
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ["name", "price", "available", "category", "created", "updated"]
-
+    list_display = [
+        "name",
+        "price",
+        "available",
+        "category",
+        "created",
+        "updated"
+    ]
     list_filter = ["available", "category", "created"]
-
     list_editable = ["price", "available"]
-
     prepopulated_fields = {"slug": ("name",)}
 
 
@@ -37,5 +40,5 @@ class OrderAdmin(admin.ModelAdmin):
         "updated",
     ]
     list_filter = ["paid", "created", "updated"]
-    # Позволяет редактировать товары прямо внутри формы заказа
+    # Дозволяє редагувати товари прямо всередині форми замовлення
     inlines = [OrderItemInline]
