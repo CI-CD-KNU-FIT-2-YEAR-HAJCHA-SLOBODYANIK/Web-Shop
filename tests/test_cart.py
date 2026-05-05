@@ -11,7 +11,7 @@ class MockProduct:
 
 class MockSession(dict):
     """
-    Клас для імітації сесії Django, 
+    Клас для імітації сесії Django,
     який підтримує словникові методи та атрибут modified.
     """
 
@@ -34,10 +34,7 @@ def mock_request():
 def test_add_to_cart(mock_request):
     """Перевірка додавання товару до кошика."""
     cart = Cart(mock_request)
-    product = MockProduct(
-        product_id=1, 
-        price=Decimal("15.50")
-        )
+    product = MockProduct(product_id=1, price=Decimal("15.50"))
 
     cart.add(product, quantity=2)
 
@@ -49,7 +46,7 @@ def test_add_to_cart(mock_request):
 
 def test_add_existing_item(mock_request):
     """
-    Перевірка додавання вже існуючого 
+    Перевірка додавання вже існуючого
     товару (збільшення кількості).
     """
     cart = Cart(mock_request)

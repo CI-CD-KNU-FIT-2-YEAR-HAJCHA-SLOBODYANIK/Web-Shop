@@ -46,12 +46,7 @@ def product_list(request, category_slug=None):
 
 
 def product_detail(request, id, slug):
-    product = get_object_or_404(
-        Product, 
-        id=id, 
-        slug=slug, 
-        available=True
-        )
+    product = get_object_or_404(Product, id=id, slug=slug, available=True)
     cart_product_form = CartAddProductForm()
     return render(
         request,
@@ -68,9 +63,7 @@ def cart_add(request, product_id):
     if form.is_valid():
         cd = form.cleaned_data
         cart.add(
-            product=product,
-              quantity=cd["quantity"],
-                override_quantity=cd["override"]
+            product=product, quantity=cd["quantity"], override_quantity=cd["override"]
         )
     return redirect("shop:cart_detail")
 
@@ -106,14 +99,7 @@ def order_create(request):
                     quantity=item["quantity"],
                 )
             cart.clear()
-            return render(
-                request,
-                  "shop/order/created.html",
-                    {"order": order})
+            return render(request, "shop/order/created.html", {"order": order})
     else:
         form = OrderCreateForm()
-    return render(
-        request,
-          "shop/order/create.html",
-            {"cart": cart, "form": form}
-            )
+    return render(request, "shop/order/create.html", {"cart": cart, "form": form})

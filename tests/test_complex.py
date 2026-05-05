@@ -7,20 +7,15 @@ from shop.models import Product, Category, Order, OrderItem
 @pytest.fixture
 def setup_shop_data(db):
     """
-    Фікстура для створення 
+    Фікстура для створення
     початкових даних у базі.
     """
     cat_weapon = Category.objects.create(
-        name="Заборонена зброя", 
-        slug="zaboronena-zbroya"
+        name="Заборонена зброя", slug="zaboronena-zbroya"
     )
-    cat_people = Category.objects.create(
-        name="Люди", 
-        slug="lyudi"
-        )
+    cat_people = Category.objects.create(name="Люди", slug="lyudi")
     cat_tanks = Category.objects.create(
-        name="Радянська військова техніка", 
-        slug="tanks"
+        name="Радянська військова техніка", slug="tanks"
     )
 
     p1 = Product.objects.create(
@@ -91,7 +86,7 @@ def test_availability_logic(client, setup_shop_data):
     """
     Перевірка логіки відображення
       тільки доступних товарів.
-      """
+    """
     response = client.get(reverse("shop:product_list"))
     assert response.status_code == 200
     assert "РДС-1" in response.content.decode("utf-8")
@@ -101,8 +96,7 @@ def test_availability_logic(client, setup_shop_data):
 def test_category_filtering(client, setup_shop_data):
     """Перевірка фільтрації за категорією."""
     url = reverse(
-        "shop:product_list_by_category",
-        args=[setup_shop_data["cat_people"].slug]
+        "shop:product_list_by_category", args=[setup_shop_data["cat_people"].slug]
     )
     response = client.get(url)
     assert "Петя" in response.content.decode("utf-8")
@@ -111,15 +105,11 @@ def test_category_filtering(client, setup_shop_data):
 
 def test_price_range_filter(client, setup_shop_data):
     """
-    Перевірка фільтрації товарів 
+    Перевірка фільтрації товарів
     за ціною (через GET-параметри).
     """
     response = client.get(
-        reverse("shop:product_list"),
-        {
-            "min_price": "200", 
-         "max_price": "1000"
-         }
+        reverse("shop:product_list"), {"min_price": "200", "max_price": "1000"}
     )
 
     content = response.content.decode("utf-8")
@@ -131,9 +121,7 @@ def test_price_range_filter(client, setup_shop_data):
 
 def test_sorting_logic(client, setup_shop_data):
     """Перевірка сортування товарів за ціною."""
-    response = client.get(reverse("shop:product_list"),
-                           {"sort": "price_asc"}
-                           )
+    response = client.get(reverse("shop:product_list"), {"sort": "price_asc"})
     products = list(response.context["products"])
     assert products[0].name == "Петя"
     assert products[-1].name == "Т-80"
@@ -141,7 +129,7 @@ def test_sorting_logic(client, setup_shop_data):
 
 def test_price_integrity_after_order(setup_shop_data):
     """
-    Перевірка збереження фіксованої 
+    Перевірка збереження фіксованої
     ціни після зміни ціни в самому каталозі.
     """
     order = Order.objects.create(
@@ -155,10 +143,7 @@ def test_price_integrity_after_order(setup_shop_data):
     original_price = product.price
 
     item = OrderItem.objects.create(
-        order=order,
-          product=product, 
-          price=original_price, 
-          quantity=1
+        order=order, product=product, price=original_price, quantity=1
     )
 
     # Змінюємо ціну товару в каталозі
