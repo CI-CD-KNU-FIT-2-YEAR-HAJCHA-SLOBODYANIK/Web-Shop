@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Ваш кошик{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Ваш кошик</h1>
+
+<table class="table table-hover align-middle">
+    <thead class="table-dark">
+        <tr>
+            <th>Товар</th>
+            <th>Кількість</th>
+            <th>Видалити</th>
+            <th>Ціна за од.</th>
+            <th>Сума</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in cart %}
+            {% with product=item.product %}
+            <tr>
+                <td>
+                    <strong>{{ product.name }}</strong>
+                </td>
+                <td>
+                    <form action="{% url 'shop:cart_add' product.id %}" method="post" class="row g-2">
+                        {% csrf_token %}
+                        <div class="col-auto">
+                            {{ item.update_quantity_form.quantity }}
+                        </div>
+                        {{ item.update_quantity_form.override }}
+                        <div class="col-auto">
+                            <button type="submit" class="btn btn-sm btn-outline-primary">Оновити</button>
+                        </div>
+                    </form>
+                </td>
+                <td>
+                    <form action="{% url 'shop:cart_remove' product.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-danger">Видалити</button>
+                    </form>
+                </td>
+                <td>${{ item.price }}</td>
+                <td>${{ item.total_price }}</td>
+            </tr>
+            {% endwith %}
+        {% empty %}
+            <tr>
+                <td colspan="5" class="text-center py-5">Кошик порожній</td>
+            </tr>
+        {% endfor %}
+        <tr class="table-light fw-bold h5">
+            <td colspan="3">Загальна вартість:</td>
+            <td colspan="2" class="text-end text-primary">${{ cart.get_total_price }}</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="d-flex justify-content-between mt-4">
+    <a href="{% url 'shop:product_list' %}" class="btn btn-secondary">Продовжити покупки</a>
+    {% if cart|length > 0 %}
+        <a href="{% url 'shop:order_create' %}" class="btn btn-primary btn-lg">Оформити замовлення</a>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,2 +1,48 @@
-<h1>Я НЕДОРОБЛЕН ВИПАВ МЕНЕ</h1>
-{{ product.name }}
+{% extends "base.html" %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+<div class="row mt-5">
+    <div class="col-md-6">
+        <!-- Місце для фото (якщо додасте ImageField) -->
+        <div class="bg-light d-flex align-items-center justify-content-center" style="height: 400px; border-radius: 10px;">
+            <span class="text-muted">Зображення товару</span>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'shop:product_list' %}">Магазин</a></li>
+                <li class="breadcrumb-item">
+                    <a href="{% url 'shop:product_list_by_category' product.category.slug %}">
+                        {{ product.category.name }}
+                    </a>
+                </li>
+            </ol>
+        </nav>
+        
+        <h1>{{ product.name }}</h1>
+        <h3 class="text-primary my-4">${{ product.price }}</h3>
+        
+        <div class="mb-4">
+            <h5>Опис:</h5>
+            <p>{{ product.description|linebreaks }}</p>
+        </div>
+
+        <div class="card bg-light">
+            <div class="card-body">
+                <form action="{% url 'shop:cart_add' product.id %}" method="post" class="d-flex align-items-end">
+                    {% csrf_token %}
+                    <div class="me-3">
+                        <label class="form-label">{{ cart_product_form.quantity.label }}</label>
+                        {{ cart_product_form.quantity }}
+                    </div>
+                    {{ cart_product_form.override }}
+                    <button type="submit" class="btn btn-success px-4">Додати в кошик</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

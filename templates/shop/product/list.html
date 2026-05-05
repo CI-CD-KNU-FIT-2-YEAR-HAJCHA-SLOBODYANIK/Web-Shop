@@ -1,4 +1,67 @@
-<h1>Я НЕДОРОБЛЕН ВИПАВ МЕНЕ</h1>
-{% for product in products %}
-    <div>{{ product.name }}</div>
-{% endfor %}
+{% extends "base.html" %}
+
+{% block title %}
+    {% if category %}{{ category.name }}{% else %}Всі товари{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- Sidebar: Фільтри та Категорії -->
+    <div class="col-md-3">
+        <h4>Категорії</h4>
+        <div class="list-group mb-4">
+            <a href="{% url 'shop:product_list' %}" class="list-group-item list-group-item-action {% if not category %}active{% endif %}">Всі</a>
+            {% for c in categories %}
+                <a href="{% url 'shop:product_list_by_category' c.slug %}" 
+                   class="list-group-item list-group-item-action {% if category.slug == c.slug %}active{% endif %}">
+                    {{ c.name }}
+                </a>
+            {% endfor %}
+        </div>
+
+        <h4>Фільтри</h4>
+        <form method="get" class="mb-4">
+            <div class="mb-2">
+                <input type="number" name="min_price" name="min_price" placeholder="Мін. ціна" class="form-control" value="{{ request.GET.min_price }}">
+            </div>
+            <div class="mb-2">
+                <input type="number" name="max_price" name="max_price" placeholder="Макс. ціна" class="form-control" value="{{ request.GET.max_price }}">
+            </div>
+            <select name="sort" class="form-select mb-2">
+                <option value="newest" {% if current_sort == 'newest' %}selected{% endif %}>Новинки</option>
+                <option value="price_asc" {% if current_sort == 'price_asc' %}selected{% endif %}>Дешевші спочатку</option>
+                <option value="price_desc" {% if current_sort == 'price_desc' %}selected{% endif %}>Дорожчі спочатку</option>
+            </select>
+            <button type="submit" class="btn btn-primary w-100">Застосувати</button>
+        </form>
+    </div>
+
+    <!-- Основний контент: Товари -->
+    <div class="col-md-9">
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            {% for product in products %}
+                <div class="col">
+                    <div class="card product-card">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <a href="{% url 'shop:product_detail' product.id product.slug %}" class="text-decoration-none text-dark">
+                                    {{ product.name }}
+                                </a>
+                            </h5>
+                            <p class="card-text text-muted">{{ product.description|truncatewords:15 }}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="h5 mb-0 text-primary">${{ product.price }}</span>
+                                <a href="{% url 'shop:product_detail' product.id product.slug %}" class="btn btn-sm btn-outline-dark">Детальніше</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="col-12 text-center mt-5">
+                    <h3>Товарів не знайдено</h3>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

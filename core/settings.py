@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 SECRET_KEY = 'django-insecure-моя-секретна-строка'
 DEBUG = True
@@ -54,7 +55,7 @@ MIDDLEWARE = [
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [Path(BASE_DIR) / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
